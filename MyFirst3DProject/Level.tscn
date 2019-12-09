@@ -1,14 +1,20 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Player.tscn" type="PackedScene" id=1]
 
 [sub_resource type="BoxShape" id=1]
-extents = Vector3( 10, 1, 10 )
+extents = Vector3( 20, 1, 20 )
 
 [sub_resource type="CubeMesh" id=2]
-size = Vector3( 20, 2, 20 )
+size = Vector3( 40, 2, 40 )
 
-[sub_resource type="SphereShape" id=3]
+[sub_resource type="SpatialMaterial" id=3]
+albedo_color = Color( 0.807843, 0.52549, 0.0392157, 1 )
+metallic = 0.15
 
-[sub_resource type="SphereMesh" id=4]
+[sub_resource type="SphereShape" id=4]
+
+[sub_resource type="SphereMesh" id=5]
 
 [node name="Level" type="Spatial"]
 
@@ -19,17 +25,21 @@ shape = SubResource( 1 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Floor"]
 mesh = SubResource( 2 )
-material/0 = null
+material/0 = SubResource( 3 )
 
 [node name="Ball" type="RigidBody" parent="."]
+editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.4136, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Ball"]
-shape = SubResource( 3 )
+shape = SubResource( 4 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Ball"]
-mesh = SubResource( 4 )
+mesh = SubResource( 5 )
 material/0 = null
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.932593, 0.36093, 0, -0.36093, 0.932593, 0, 7.35153, 17.5453 )
+transform = Transform( 1, 0, 0, 0, 0.8074, 0.590004, 0, -0.590004, 0.8074, 0, 16.3515, 31.5453 )
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0 )
