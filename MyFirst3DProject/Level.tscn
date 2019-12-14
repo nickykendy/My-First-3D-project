@@ -19,6 +19,7 @@ metallic = 0.15
 [node name="Level" type="Spatial"]
 
 [node name="Floor" type="StaticBody" parent="."]
+editor/display_folded = true
 
 [node name="CollisionShape" type="CollisionShape" parent="Floor"]
 shape = SubResource( 1 )
@@ -42,4 +43,4 @@ material/0 = null
 transform = Transform( 1, 0, 0, 0, 0.8074, 0.590004, 0, -0.590004, 0.8074, 0, 16.3515, 31.5453 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.87001, 8 )
