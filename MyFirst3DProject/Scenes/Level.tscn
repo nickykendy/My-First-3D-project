@@ -1,0 +1,339 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/MyEnv.tres" type="Environment" id=2]
+[ext_resource path="res://Textures/TactilePaving002_2K_Normal.jpg" type="Texture" id=3]
+[ext_resource path="res://Textures/TactilePaving002_2K_Roughness.jpg" type="Texture" id=4]
+[ext_resource path="res://BlockLibrary.tres" type="MeshLibrary" id=5]
+[ext_resource path="res://Scenes/Enemy.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/Coin.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Fonts/Redkost Comic.otf" type="DynamicFontData" id=8]
+[ext_resource path="res://Assets/hud_coin.png" type="Texture" id=9]
+[ext_resource path="res://Scripts/CoinCounter.gd" type="Script" id=10]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 20, 1, 20 )
+
+[sub_resource type="CubeMesh" id=2]
+size = Vector3( 40, 2, 40 )
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_color = Color( 0.6, 0.368627, 0.0470588, 1 )
+metallic = 0.15
+roughness_texture = ExtResource( 4 )
+normal_enabled = true
+normal_scale = -3.5
+normal_texture = ExtResource( 3 )
+uv1_scale = Vector3( 0.2, 0.2, 0.2 )
+uv1_triplanar = true
+
+[sub_resource type="Animation" id=4]
+resource_name = "e_anim"
+length = 8.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 4, 8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -16.0228, 1, -1.85398 ), Vector3( 16.2753, 1, -1.85398 ), Vector3( -16.0228, 1, -1.85398 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 4, 8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, -270 ), Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "e_anim"
+length = 8.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 3, 4, 7, 8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -16.6989, 1, 11.1382 ), Vector3( 4.40933, 1, 11.1382 ), Vector3( 4.40933, 1, 16.7862 ), Vector3( -16.699, 1, 16.786 ), Vector3( -16.6989, 1, 11.1382 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 3, 4, 7, 8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, -220 ), Vector3( 45, 0, -220 ), Vector3( 45, 0, 0 ), Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="DynamicFont" id=6]
+size = 40
+font_data = ExtResource( 8 )
+
+[node name="Level" type="Spatial"]
+
+[node name="Floor" type="StaticBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Floor"]
+shape = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Floor"]
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16.689, 1, -16.9306 )
+SPD = 10
+ROT = 6
+
+[node name="CameraTarget" type="Spatial" parent="Player"]
+transform = Transform( 1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 6, 4 )
+
+[node name="InterpolatedCamera" type="InterpolatedCamera" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.14053, 15.1624 )
+environment = ExtResource( 2 )
+target = NodePath("../Player/CameraTarget")
+speed = 5.0
+enabled = true
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 0.561997, 0.584876, -0.584876, 0, 0.707107, 0.707107, 0.827139, -0.397392, 0.397392, 0, 16.403, 23.6404 )
+light_color = Color( 0.901961, 0.909804, 0.694118, 1 )
+light_energy = 2.0
+shadow_enabled = true
+shadow_color = Color( 0.4, 0.180392, 0.0705882, 1 )
+
+[node name="GridMap" type="GridMap" parent="."]
+mesh_library = ExtResource( 5 )
+cell_size = Vector3( 1, 1, 1 )
+data = {
+"cells": PoolIntArray( 0, 0, 1310720, 1, 0, 1310720, 2, 0, 1310720, 3, 0, 1310720, 4, 0, 1310720, 5, 0, 1310720, 10, 0, 1310720, 11, 0, 1310720, 12, 0, 1310720, 13, 0, 1310720, 14, 0, 1310720, 19, 0, 1310720, 65516, 0, 1310720, 65517, 0, 1310720, 65518, 0, 1310720, 65519, 0, 1310720, 65520, 0, 1310720, 65521, 0, 1310720, 65522, 0, 1310720, 65523, 0, 1310720, 65524, 0, 1310720, 65525, 0, 1310720, 65526, 0, 1310720, 65527, 0, 1310720, 65528, 0, 1310720, 65529, 0, 1310720, 65530, 0, 1310720, 65535, 0, 1310720, 5, 1, 1310720, 10, 1, 1310720, 19, 1, 1310720, 65516, 1, 1310720, 65524, 1, 1310720, 65527, 1, 1310720, 65535, 1, 1310720, 5, 2, 1310720, 10, 2, 1310720, 19, 2, 1310720, 65516, 2, 1310720, 65525, 2, 1310720, 65527, 2, 1310720, 65535, 2, 1310720, 5, 3, 1310720, 10, 3, 1310720, 19, 3, 1310720, 65516, 3, 1310720, 65526, 3, 1310720, 65527, 3, 1310720, 65535, 3, 1310720, 5, 4, 1310720, 10, 4, 1310720, 19, 4, 1310720, 65516, 4, 1310720, 65520, 4, 1310720, 65535, 4, 1310720, 5, 5, 1310720, 10, 5, 1310720, 11, 5, 1310720, 12, 5, 1310720, 13, 5, 1310720, 14, 5, 1310720, 19, 5, 1310720, 65516, 5, 1310720, 65521, 5, 1310720, 65532, 5, 1310720, 65533, 5, 1310720, 65534, 5, 1310720, 65535, 5, 1310720, 5, 6, 1310720, 14, 6, 1310720, 19, 6, 1310720, 65516, 6, 1310720, 65522, 6, 1310720, 65532, 6, 1310720, 5, 7, 1310720, 14, 7, 1310720, 19, 7, 1310720, 65516, 7, 1310720, 65522, 7, 1310720, 65523, 7, 1310720, 65532, 7, 1310720, 0, 8, 1310720, 1, 8, 1310720, 2, 8, 1310720, 3, 8, 1310720, 4, 8, 1310720, 5, 8, 1310720, 14, 8, 1310720, 19, 8, 1310720, 65516, 8, 1310720, 65517, 8, 1310720, 65518, 8, 1310720, 65519, 8, 1310720, 65520, 8, 1310720, 65521, 8, 1310720, 65522, 8, 1310720, 65523, 8, 1310720, 65524, 8, 1310720, 65525, 8, 1310720, 65526, 8, 1310720, 65527, 8, 1310720, 65528, 8, 1310720, 65529, 8, 1310720, 65530, 8, 1310720, 65531, 8, 1310720, 65532, 8, 1310720, 65533, 8, 1310720, 65534, 8, 1310720, 65535, 8, 1310720, 14, 9, 1310720, 19, 9, 1310720, 65516, 9, 1310720, 14, 10, 1310720, 19, 10, 1310720, 65516, 10, 1310720, 14, 11, 1310720, 19, 11, 1310720, 65516, 11, 1310720, 14, 12, 1310720, 19, 12, 1310720, 65516, 12, 1310720, 14, 13, 1310720, 19, 13, 1310720, 65516, 13, 1310720, 65521, 13, 1310720, 65522, 13, 1310720, 0, 14, 1310720, 1, 14, 1310720, 7, 14, 1310720, 8, 14, 1310720, 9, 14, 1310720, 10, 14, 1310720, 11, 14, 1310720, 12, 14, 1310720, 13, 14, 1310720, 14, 14, 1310720, 19, 14, 1310720, 65516, 14, 1310720, 65521, 14, 1310720, 65522, 14, 1310720, 65527, 14, 1310720, 65528, 14, 1310720, 65529, 14, 1310720, 65530, 14, 1310720, 65531, 14, 1310720, 65532, 14, 1310720, 65533, 14, 1310720, 65534, 14, 1310720, 65535, 14, 1310720, 19, 15, 1310720, 65516, 15, 1310720, 19, 16, 1310720, 65516, 16, 1310720, 19, 17, 1310720, 65516, 17, 1310720, 19, 18, 1310720, 65516, 18, 1310720, 0, 19, 1310720, 1, 19, 1310720, 2, 19, 1310720, 3, 19, 1310720, 4, 19, 1310720, 5, 19, 1310720, 6, 19, 1310720, 7, 19, 1310720, 8, 19, 1310720, 9, 19, 1310720, 10, 19, 1310720, 11, 19, 1310720, 12, 19, 1310720, 13, 19, 1310720, 14, 19, 1310720, 15, 19, 1310720, 16, 19, 1310720, 17, 19, 1310720, 18, 19, 1310720, 19, 19, 1310720, 65516, 19, 1310720, 65517, 19, 1310720, 65518, 19, 1310720, 65519, 19, 1310720, 65520, 19, 1310720, 65521, 19, 1310720, 65522, 19, 1310720, 65523, 19, 1310720, 65524, 19, 1310720, 65525, 19, 1310720, 65526, 19, 1310720, 65527, 19, 1310720, 65528, 19, 1310720, 65529, 19, 1310720, 65530, 19, 1310720, 65531, 19, 1310720, 65532, 19, 1310720, 65533, 19, 1310720, 65534, 19, 1310720, 65535, 19, 1310720, 0, 65516, 1310720, 1, 65516, 1310720, 2, 65516, 1310720, 3, 65516, 1310720, 4, 65516, 1310720, 5, 65516, 1310720, 6, 65516, 1310720, 7, 65516, 1310720, 8, 65516, 1310720, 9, 65516, 1310720, 10, 65516, 1310720, 11, 65516, 1310720, 12, 65516, 1310720, 13, 65516, 1310720, 14, 65516, 1310720, 15, 65516, 1310720, 16, 65516, 1310720, 17, 65516, 1310720, 18, 65516, 1310720, 19, 65516, 1310720, 65516, 65516, 1310720, 65517, 65516, 1310720, 65518, 65516, 1310720, 65519, 65516, 1310720, 65520, 65516, 1310720, 65521, 65516, 1310720, 65522, 65516, 1310720, 65523, 65516, 1310720, 65524, 65516, 1310720, 65525, 65516, 1310720, 65526, 65516, 1310720, 65527, 65516, 1310720, 65528, 65516, 1310720, 65529, 65516, 1310720, 65530, 65516, 1310720, 65531, 65516, 1310720, 65532, 65516, 1310720, 65533, 65516, 1310720, 65534, 65516, 1310720, 65535, 65516, 1310720, 19, 65517, 1310720, 65516, 65517, 1310720, 65522, 65517, 1310720, 65530, 65517, 1310720, 65535, 65517, 1310720, 19, 65518, 1310720, 65516, 65518, 1310720, 65522, 65518, 1310720, 65530, 65518, 1310720, 65535, 65518, 1310720, 19, 65519, 1310720, 65516, 65519, 1310720, 65522, 65519, 1310720, 65530, 65519, 1310720, 65535, 65519, 1310720, 19, 65520, 1310720, 65516, 65520, 1310720, 65522, 65520, 1310720, 65530, 65520, 1310720, 65535, 65520, 1310720, 8, 65521, 1310720, 9, 65521, 1310720, 10, 65521, 1310720, 11, 65521, 1310720, 12, 65521, 1310720, 13, 65521, 1310720, 14, 65521, 1310720, 19, 65521, 1310720, 65516, 65521, 1310720, 65522, 65521, 1310720, 65524, 65521, 1310720, 65525, 65521, 1310720, 65526, 65521, 1310720, 65527, 65521, 1310720, 65528, 65521, 1310720, 65529, 65521, 1310720, 65530, 65521, 1310720, 65535, 65521, 1310720, 8, 65522, 1310720, 14, 65522, 1310720, 19, 65522, 1310720, 65516, 65522, 1310720, 65522, 65522, 1310720, 65524, 65522, 1310720, 65535, 65522, 1310720, 8, 65523, 1310720, 14, 65523, 1310720, 19, 65523, 1310720, 65516, 65523, 1310720, 65522, 65523, 1310720, 65524, 65523, 1310720, 65535, 65523, 1310720, 8, 65524, 1310720, 14, 65524, 1310720, 19, 65524, 1310720, 65516, 65524, 1310720, 65522, 65524, 1310720, 65524, 65524, 1310720, 65535, 65524, 1310720, 8, 65525, 1310720, 14, 65525, 1310720, 19, 65525, 1310720, 65516, 65525, 1310720, 65522, 65525, 1310720, 65524, 65525, 1310720, 65535, 65525, 1310720, 4, 65526, 1310720, 5, 65526, 1310720, 6, 65526, 1310720, 7, 65526, 1310720, 8, 65526, 1310720, 14, 65526, 1310720, 19, 65526, 1310720, 65516, 65526, 1310720, 65522, 65526, 1310720, 65523, 65526, 1310720, 65524, 65526, 1310720, 65530, 65526, 1310720, 65531, 65526, 1310720, 65532, 65526, 1310720, 65533, 65526, 1310720, 65534, 65526, 1310720, 65535, 65526, 1310720, 14, 65527, 1310720, 19, 65527, 1310720, 65516, 65527, 1310720, 65530, 65527, 1310720, 14, 65528, 1310720, 19, 65528, 1310720, 65516, 65528, 1310720, 65530, 65528, 1310720, 14, 65529, 1310720, 19, 65529, 1310720, 65516, 65529, 1310720, 65530, 65529, 1310720, 14, 65530, 1310720, 19, 65530, 1310720, 65516, 65530, 1310720, 65530, 65530, 1310720, 0, 65531, 1310720, 1, 65531, 1310720, 2, 65531, 1310720, 3, 65531, 1310720, 4, 65531, 1310720, 5, 65531, 1310720, 6, 65531, 1310720, 7, 65531, 1310720, 8, 65531, 1310720, 9, 65531, 1310720, 10, 65531, 1310720, 11, 65531, 1310720, 12, 65531, 1310720, 13, 65531, 1310720, 14, 65531, 1310720, 19, 65531, 1310720, 65516, 65531, 1310720, 65522, 65531, 1310720, 65523, 65531, 1310720, 65524, 65531, 1310720, 65525, 65531, 1310720, 65526, 65531, 1310720, 65527, 65531, 1310720, 65528, 65531, 1310720, 65529, 65531, 1310720, 65530, 65531, 1310720, 65535, 65531, 1310720, 19, 65532, 1310720, 65516, 65532, 1310720, 19, 65533, 1310720, 65516, 65533, 1310720, 19, 65534, 1310720, 65516, 65534, 1310720, 19, 65535, 1310720, 65516, 65535, 1310720 )
+}
+__meta__ = {
+"_editor_clip_": 0
+}
+
+[node name="Enemy_Group" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.112, 1, 0 )
+
+[node name="enemy" parent="Enemy_Group" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.9108, 0, -1.85398 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Enemy_Group/enemy"]
+autoplay = "e_anim"
+anims/e_anim = SubResource( 4 )
+
+[node name="enemy2" parent="Enemy_Group" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5869, 0, 11.1382 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Enemy_Group/enemy2"]
+autoplay = "e_anim"
+anims/e_anim = SubResource( 5 )
+
+[node name="Coin_Group" type="Spatial" parent="."]
+
+[node name="Holder_1" type="Spatial" parent="Coin_Group"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 17.0727, 1, -8.84365 )
+
+[node name="coin" parent="Coin_Group/Holder_1" instance=ExtResource( 7 )]
+
+[node name="Holder_2" type="Spatial" parent="Coin_Group"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.0768, 1, 2.93494 )
+
+[node name="coin" parent="Coin_Group/Holder_2" instance=ExtResource( 7 )]
+
+[node name="Holder_3" type="Spatial" parent="Coin_Group"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5593, 1, -11.9427 )
+
+[node name="coin" parent="Coin_Group/Holder_3" instance=ExtResource( 7 )]
+
+[node name="Holder_4" type="Spatial" parent="Coin_Group"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.85859, 1, -16.957 )
+
+[node name="coin" parent="Coin_Group/Holder_4" instance=ExtResource( 7 )]
+
+[node name="Holder_5" type="Spatial" parent="Coin_Group"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16.3528, 1, -16.8721 )
+
+[node name="coin" parent="Coin_Group/Holder_5" instance=ExtResource( 7 )]
+
+[node name="Holder_6" type="Spatial" parent="Coin_Group"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16.3005, 1, -14.3682 )
+
+[node name="coin" parent="Coin_Group/Holder_6" instance=ExtResource( 7 )]
+
+[node name="Holder_7" type="Spatial" parent="Coin_Group"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16.1726, 1, -11.7634 )
+
+[node name="coin" parent="Coin_Group/Holder_7" instance=ExtResource( 7 )]
+
+[node name="Holder_8" type="Spatial" parent="Coin_Group"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16.9249, 1, 6.51846 )
+
+[node name="coin" parent="Coin_Group/Holder_8" instance=ExtResource( 7 )]
+
+[node name="Holder_9" type="Spatial" parent="Coin_Group"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4152, 1, 3.9744 )
+
+[node name="coin" parent="Coin_Group/Holder_9" instance=ExtResource( 7 )]
+
+[node name="Holder_10" type="Spatial" parent="Coin_Group"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11.8058, 1, 8.33015 )
+
+[node name="coin" parent="Coin_Group/Holder_10" instance=ExtResource( 7 )]
+
+[node name="Holder_11" type="Spatial" parent="Coin_Group"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11.8035, 1, 11.9175 )
+
+[node name="coin" parent="Coin_Group/Holder_11" instance=ExtResource( 7 )]
+
+[node name="Holder_12" type="Spatial" parent="Coin_Group"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16.823, 1, 2.72713 )
+
+[node name="coin" parent="Coin_Group/Holder_12" instance=ExtResource( 7 )]
+
+[node name="Holder_13" type="Spatial" parent="Coin_Group"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14.4224, 1, 2.63833 )
+
+[node name="coin" parent="Coin_Group/Holder_13" instance=ExtResource( 7 )]
+
+[node name="Holder_14" type="Spatial" parent="Coin_Group"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.4361, 1, 5.95373 )
+
+[node name="coin" parent="Coin_Group/Holder_14" instance=ExtResource( 7 )]
+
+[node name="Holder_15" type="Spatial" parent="Coin_Group"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5031, 1, -6.86273 )
+
+[node name="coin" parent="Coin_Group/Holder_15" instance=ExtResource( 7 )]
+
+[node name="Holder_16" type="Spatial" parent="Coin_Group"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.24217, 1, 3.08198 )
+
+[node name="coin" parent="Coin_Group/Holder_16" instance=ExtResource( 7 )]
+
+[node name="Holder_17" type="Spatial" parent="Coin_Group"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11.985, 1, 17.1616 )
+
+[node name="coin" parent="Coin_Group/Holder_17" instance=ExtResource( 7 )]
+
+[node name="Holder_18" type="Spatial" parent="Coin_Group"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.9154, 1, -11.8809 )
+
+[node name="coin" parent="Coin_Group/Holder_18" instance=ExtResource( 7 )]
+
+[node name="Holder_19" type="Spatial" parent="Coin_Group"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.03054, 1, -14.3111 )
+
+[node name="coin" parent="Coin_Group/Holder_19" instance=ExtResource( 7 )]
+
+[node name="Holder_20" type="Spatial" parent="Coin_Group"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.7046, 1, 13.8753 )
+
+[node name="coin" parent="Coin_Group/Holder_20" instance=ExtResource( 7 )]
+
+[node name="HUD" type="Control" parent="."]
+margin_right = 1280.0
+margin_bottom = 800.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="X" type="Label" parent="HUD"]
+margin_left = 1127.39
+margin_top = 3.0
+margin_right = 1202.39
+margin_bottom = 62.0
+custom_fonts/font = SubResource( 6 )
+custom_colors/font_color = Color( 0.956863, 0.894118, 0.0470588, 1 )
+text = "X"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CoinCounter" type="Label" parent="HUD"]
+margin_left = 1175.0
+margin_top = 2.0
+margin_right = 1273.0
+margin_bottom = 61.0
+custom_fonts/font = SubResource( 6 )
+custom_colors/font_color = Color( 0.898039, 0.886275, 0.027451, 1 )
+text = "999"
+align = 1
+valign = 1
+script = ExtResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer" type="Timer" parent="HUD/CoinCounter"]
+
+[node name="Sprite" type="Sprite" parent="HUD"]
+position = Vector2( 1116.27, 31.246 )
+scale = Vector2( 0.1, 0.1 )
+texture = ExtResource( 9 )
+[connection signal="body_entered" from="Enemy_Group/enemy" to="Player" method="_on_enemy_body_entered"]
+[connection signal="body_entered" from="Enemy_Group/enemy2" to="Player" method="_on_enemy_body_entered"]
+[connection signal="body_entered" from="Coin_Group/Holder_1/coin" to="Coin_Group/Holder_1/coin" method="_on_coin_body_entered"]
+[connection signal="coinCollected" from="Coin_Group/Holder_1/coin" to="HUD/CoinCounter" method="_on_coin_coinCollected"]
+[connection signal="body_entered" from="Coin_Group/Holder_2/coin" to="Coin_Group/Holder_2/coin" method="_on_coin_body_entered"]
+[connection signal="coinCollected" from="Coin_Group/Holder_2/coin" to="HUD/CoinCounter" method="_on_coin_coinCollected"]
+[connection signal="body_entered" from="Coin_Group/Holder_3/coin" to="Coin_Group/Holder_3/coin" method="_on_coin_body_entered"]
+[connection signal="coinCollected" from="Coin_Group/Holder_3/coin" to="HUD/CoinCounter" method="_on_coin_coinCollected"]
+[connection signal="body_entered" from="Coin_Group/Holder_4/coin" to="Coin_Group/Holder_4/coin" method="_on_coin_body_entered"]
+[connection signal="coinCollected" from="Coin_Group/Holder_4/coin" to="HUD/CoinCounter" method="_on_coin_coinCollected"]
+[connection signal="body_entered" from="Coin_Group/Holder_5/coin" to="Coin_Group/Holder_5/coin" method="_on_coin_body_entered"]
+[connection signal="coinCollected" from="Coin_Group/Holder_5/coin" to="HUD/CoinCounter" method="_on_coin_coinCollected"]
+[connection signal="body_entered" from="Coin_Group/Holder_6/coin" to="Coin_Group/Holder_6/coin" method="_on_coin_body_entered"]
+[connection signal="coinCollected" from="Coin_Group/Holder_6/coin" to="HUD/CoinCounter" method="_on_coin_coinCollected"]
+[connection signal="body_entered" from="Coin_Group/Holder_7/coin" to="Coin_Group/Holder_7/coin" method="_on_coin_body_entered"]
+[connection signal="coinCollected" from="Coin_Group/Holder_7/coin" to="HUD/CoinCounter" method="_on_coin_coinCollected"]
+[connection signal="body_entered" from="Coin_Group/Holder_8/coin" to="Coin_Group/Holder_8/coin" method="_on_coin_body_entered"]
+[connection signal="coinCollected" from="Coin_Group/Holder_8/coin" to="HUD/CoinCounter" method="_on_coin_coinCollected"]
+[connection signal="body_entered" from="Coin_Group/Holder_9/coin" to="Coin_Group/Holder_9/coin" method="_on_coin_body_entered"]
+[connection signal="coinCollected" from="Coin_Group/Holder_9/coin" to="HUD/CoinCounter" method="_on_coin_coinCollected"]
+[connection signal="body_entered" from="Coin_Group/Holder_10/coin" to="Coin_Group/Holder_10/coin" method="_on_coin_body_entered"]
+[connection signal="coinCollected" from="Coin_Group/Holder_10/coin" to="HUD/CoinCounter" method="_on_coin_coinCollected"]
+[connection signal="body_entered" from="Coin_Group/Holder_11/coin" to="Coin_Group/Holder_11/coin" method="_on_coin_body_entered"]
+[connection signal="coinCollected" from="Coin_Group/Holder_11/coin" to="HUD/CoinCounter" method="_on_coin_coinCollected"]
+[connection signal="body_entered" from="Coin_Group/Holder_12/coin" to="Coin_Group/Holder_12/coin" method="_on_coin_body_entered"]
+[connection signal="coinCollected" from="Coin_Group/Holder_12/coin" to="HUD/CoinCounter" method="_on_coin_coinCollected"]
+[connection signal="body_entered" from="Coin_Group/Holder_13/coin" to="Coin_Group/Holder_13/coin" method="_on_coin_body_entered"]
+[connection signal="coinCollected" from="Coin_Group/Holder_13/coin" to="HUD/CoinCounter" method="_on_coin_coinCollected"]
+[connection signal="body_entered" from="Coin_Group/Holder_14/coin" to="Coin_Group/Holder_14/coin" method="_on_coin_body_entered"]
+[connection signal="coinCollected" from="Coin_Group/Holder_14/coin" to="HUD/CoinCounter" method="_on_coin_coinCollected"]
+[connection signal="body_entered" from="Coin_Group/Holder_15/coin" to="Coin_Group/Holder_15/coin" method="_on_coin_body_entered"]
+[connection signal="coinCollected" from="Coin_Group/Holder_15/coin" to="HUD/CoinCounter" method="_on_coin_coinCollected"]
+[connection signal="body_entered" from="Coin_Group/Holder_16/coin" to="Coin_Group/Holder_16/coin" method="_on_coin_body_entered"]
+[connection signal="coinCollected" from="Coin_Group/Holder_16/coin" to="HUD/CoinCounter" method="_on_coin_coinCollected"]
+[connection signal="body_entered" from="Coin_Group/Holder_17/coin" to="Coin_Group/Holder_17/coin" method="_on_coin_body_entered"]
+[connection signal="coinCollected" from="Coin_Group/Holder_17/coin" to="HUD/CoinCounter" method="_on_coin_coinCollected"]
+[connection signal="body_entered" from="Coin_Group/Holder_18/coin" to="Coin_Group/Holder_18/coin" method="_on_coin_body_entered"]
+[connection signal="coinCollected" from="Coin_Group/Holder_18/coin" to="HUD/CoinCounter" method="_on_coin_coinCollected"]
+[connection signal="body_entered" from="Coin_Group/Holder_19/coin" to="Coin_Group/Holder_19/coin" method="_on_coin_body_entered"]
+[connection signal="coinCollected" from="Coin_Group/Holder_19/coin" to="HUD/CoinCounter" method="_on_coin_coinCollected"]
+[connection signal="body_entered" from="Coin_Group/Holder_20/coin" to="Coin_Group/Holder_20/coin" method="_on_coin_body_entered"]
+[connection signal="coinCollected" from="Coin_Group/Holder_20/coin" to="HUD/CoinCounter" method="_on_coin_coinCollected"]
+[connection signal="timeout" from="HUD/CoinCounter/Timer" to="HUD/CoinCounter" method="_on_Timer_timeout"]

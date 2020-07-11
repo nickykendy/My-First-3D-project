@@ -16,15 +16,17 @@ _global_script_class_icons={
 [application]
 
 config/name="MyFirst3DProject"
-run/main_scene="res://Level.tscn"
+run/main_scene="res://Scenes/Menu.tscn"
 config/icon="res://icon.png"
 
 [display]
 
 window/size/width=1280
 window/size/height=800
-window/size/test_width=1280
-window/size/test_height=800
+window/size/test_width=640
+window/size/test_height=400
+window/stretch/mode="2d"
+window/stretch/aspect="keep"
 
 [input]
 
@@ -59,4 +61,4 @@ ui_down={
 
 [rendering]
 
-environment/default_environment="res://default_env.tres"
+environment/default_environment="res://Assets/MyEnv.tres"

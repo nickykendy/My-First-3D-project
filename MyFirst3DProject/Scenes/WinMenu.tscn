@@ -1,0 +1,55 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Fonts/Redkost Comic.otf" type="DynamicFontData" id=1]
+[ext_resource path="res://Scripts/ButtonTitle.gd" type="Script" id=2]
+[ext_resource path="res://Fonts/Some Time Later.otf" type="DynamicFontData" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 120
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 40
+font_data = ExtResource( 3 )
+
+[node name="WinMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 1280.0
+margin_bottom = 800.0
+color = Color( 0.741176, 0.898039, 0.580392, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_top = 200.0
+margin_right = 1280.0
+margin_bottom = 400.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0.941176, 0.87451, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.0941176, 0.776471, 0.0117647, 1 )
+custom_constants/shadow_offset_x = 5
+custom_constants/shadow_offset_y = 5
+text = "YOU FUCKING WIN!"
+align = 1
+valign = 1
+
+[node name="ButtonTitle" type="Button" parent="."]
+margin_left = 419.691
+margin_top = 447.868
+margin_right = 848.691
+margin_bottom = 586.868
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.164706, 0.713726, 0.870588, 1 )
+custom_colors/font_color_hover = Color( 0.0941176, 0.835294, 0.25098, 1 )
+custom_colors/font_color_pressed = Color( 0.831373, 0.0941176, 0.847059, 1 )
+text = "Play Again"
+flat = true
+script = ExtResource( 2 )
+[connection signal="pressed" from="ButtonTitle" to="ButtonTitle" method="_on_ButtonTitle_pressed"]
